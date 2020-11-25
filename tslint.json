@@ -27,10 +27,17 @@
         "spaces"
       ]
     },
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
     "max-classes-per-file": false,
     "max-line-length": [
       true,
       140
+    ],
+    "member-access": [
+      true
     ],
     "member-ordering": [
       true,
