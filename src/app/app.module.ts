@@ -5,12 +5,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppComponent} from './app.component';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {RoutingModule} from './routing.module';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    CommonModule,
     RoutingModule,
     BrowserModule,
     BrowserAnimationsModule,

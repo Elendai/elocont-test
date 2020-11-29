@@ -49,4 +49,15 @@ export class EventsDataSource implements DataSource<ICowEvent> {
 
     this.rest.saveRow(item).subscribe(() => this.loadEvents(active, direction));
   }
+
+  public addRow(item: ICowEvent): void {
+    const val = this.eventsSubject.value;
+    val.unshift(item);
+    this.eventsSubject.next(val);
+  }
+
+  public createRow(item: ICowEvent, active: string, direction: string): void {
+    this.loadingSubject.next(true);
+    this.rest.createRow(item).subscribe(() => this.loadEvents(active, direction));
+  }
 }

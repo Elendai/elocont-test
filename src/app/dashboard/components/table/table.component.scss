@@ -19,3 +19,10 @@
     top: 50%;
   }
 }
+
+.button-add-row {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  z-index: 100;
+}

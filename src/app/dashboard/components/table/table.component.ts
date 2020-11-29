@@ -95,5 +95,21 @@ export class TableComponent implements AfterViewInit, OnInit {
   public hasProperty(prop: string, obj: object): boolean {
     return obj.hasOwnProperty(prop);
   }
+
+  public addRow(): void {
+    if (this.editing) {
+      this.dataSource.createRow(this.editing, this.sort.active, this.sort.direction);
+      this.editing = null;
+    } else {
+      this.editing = {
+        reportingDateTime: new Date(),
+        type: EventTypeEnum.systemHealth,
+        cowId: parseInt(Math.random().toString().substr(2, 5), 10),
+        animalId: parseInt(Math.random().toString().substr(2, 5), 10),
+        eventId: parseInt(Math.random().toString().substr(2, 5), 10),
+      };
+      this.dataSource.addRow(this.editing);
+    }
+  }
 }
 

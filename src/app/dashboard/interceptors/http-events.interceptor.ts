@@ -10,10 +10,10 @@ import {ICowEvent} from '../../interfaces';
 export class HttpEventsInterceptor implements HttpInterceptor {
 
   private DELAY = 700;
+  private STORAGE_KEY = 'saved_state';
 
-  // tslint:disable-next-line:no-string-literal
-  private events = events['default'];
-  private requestList = [{
+  private readonly events;
+  private REQUEST_TYPES = [{
     method: 'GET',
     processor: (params: HttpParams, body: any) => {
       const isAsc = params.get('direction') === 'asc';
@@ -30,6 +30,7 @@ export class HttpEventsInterceptor implements HttpInterceptor {
         this.events.result.splice(index, 1);
         this.events.total--;
       }
+      this.saveState();
       return this.events;
     }
   }, {
@@ -39,22 +40,32 @@ export class HttpEventsInterceptor implements HttpInterceptor {
       if (index !== -1) {
         this.events.result[index] = body;
       }
+      this.saveState();
+      return this.events;
+    }
+  }, {
+    method: 'PUT',
+    processor: (params: HttpParams, body: ICowEvent) => {
+      this.saveState();
       return this.events;
     }
   }];
 
   constructor() {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    // tslint:disable-next-line:no-string-literal
+    this.events = stored ? JSON.parse(stored) : events['default'];
     this.events.result.forEach(el => {
       ['startDateTime', 'reportingDateTime', 'endDate', 'endDateTime', 'originalStartDateTime', 'minValueDateTime'].forEach(d => {
         if (el.hasOwnProperty(d) && el[d]) {
-          el[d] = new Date(el[d] * 1000);
+          el[d] = new Date(stored ? el[d] : el[d] * 1000);
         }
       });
     });
   }
 
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    for (const el of this.requestList) {
+    for (const el of this.REQUEST_TYPES) {
       if (el.method === request.method) {
         return of(new HttpResponse({
           status: 200,
@@ -65,6 +76,10 @@ export class HttpEventsInterceptor implements HttpInterceptor {
       }
     }
     return next.handle(request);
+  }
+
+  private saveState(): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.events));
   }
 }
 

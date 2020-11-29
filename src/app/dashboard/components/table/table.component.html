@@ -3,438 +3,446 @@
     <mat-spinner></mat-spinner>
   </div>
 
-  <table
-    class="full-width-table"
-    mat-table
-    [dataSource]="dataSource"
-    matSort
-    matSortActive="reportingDateTime"
-    matSortDirection="desc"
-    matSortDisableClear>
-    <ng-container matColumnDef="reportingDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reporting Date</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <mat-form-field appearance="legacy">
-            <input disabled matInput [matDatepicker]="picker" name="reportingDateTime" [(ngModel)]="editing.reportingDateTime">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker disabled="false"></mat-datepicker>
-          </mat-form-field>
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.reportingDateTime | date}}
-        </ng-container>
-      </td>
-    </ng-container>
+  <pre>
+    {{f.valid | json}}
+  </pre>
 
-    <ng-container matColumnDef="startDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date Time</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <mat-form-field appearance="legacy">
-            <input disabled matInput [matDatepicker]="picker" name="startDateTime" [(ngModel)]="editing.startDateTime">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker disabled="false"></mat-datepicker>
-          </mat-form-field>
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.startDateTime | date}}
-        </ng-container>
-      </td>
-    </ng-container>
+  <form #f="ngForm">
+    <table
+      class="full-width-table"
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      matSortActive="reportingDateTime"
+      matSortDirection="desc"
+      matSortDisableClear>
 
-    <ng-container matColumnDef="cowId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cow Id</th>
-      <td mat-cell *matCellDef="let row">
-        {{row.cowId}}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <mat-select [(ngModel)]="editing.type">
-            <mat-option *ngFor="let t of types" [value]="t">{{t}}</mat-option>
-          </mat-select>
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.type}}
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="animalId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Animal Id</th>
-      <td mat-cell *matCellDef="let row">
-        {{row.animalId}}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="eventId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Id</th>
-      <td mat-cell *matCellDef="let row">
-        {{row.eventId}}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="lactationNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Lactation Number</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <input matInput type="number" name="lactationNumber" min="0" [(ngModel)]="editing.lactationNumber">
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.lactationNumber}}
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="daysInLactation">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Days In Lactation</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <input matInput type="number" name="daysInLactation" min="0" [(ngModel)]="editing.daysInLactation">
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.daysInLactation}}
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="ageInDays">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Age In Days</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="editing && editing.eventId === row.eventId">
-          <input matInput type="number" name="ageInDays" min="1" [(ngModel)]="editing.ageInDays">
-        </ng-container>
-        <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-          {{row.ageInDays}}
-        </ng-container>
-      </td>
-    </ng-container>
-
-
-    <!--    CUSTOM START-->
-    <ng-container matColumnDef="birthDateCalculated">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth Date Calculated</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('birthDateCalculated', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <mat-slide-toggle [(ngModel)]="editing.birthDateCalculated"></mat-slide-toggle>
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.birthDateCalculated ? 'Yes' : 'No'}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="sire">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sire</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('sire', row)">
-          {{row.sire}}
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="breedingNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Breeding Number</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('breedingNumber', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="breedingNumber" min="0" [(ngModel)]="editing.breedingNumber">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.breedingNumber}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="isOutOfBreedingWindow">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Of Breeding Window</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('isOutOfBreedingWindow', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <mat-slide-toggle [(ngModel)]="editing.isOutOfBreedingWindow"></mat-slide-toggle>
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.isOutOfBreedingWindow ? 'Yes' : 'No'}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="interval">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Interval</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('interval', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="interval" min="0" [(ngModel)]="editing.interval">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.interval}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="destinationGroupName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Destination Group Name</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('destinationGroupName', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput name="destinationGroupName" [(ngModel)]="editing.destinationGroupName">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.destinationGroupName}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="calvingEase">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Calving Ease</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('calvingEase', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="calvingEase" min="0" [(ngModel)]="editing.calvingEase">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.calvingEase}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="daysInPregnancy">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Days In Pregnancy</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('daysInPregnancy', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="daysInPregnancy" min="0" [(ngModel)]="editing.daysInPregnancy">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.daysInPregnancy}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="oldLactationNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Old Lactation Number</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('oldLactationNumber', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="oldLactationNumber" min="0" [(ngModel)]="editing.oldLactationNumber">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.oldLactationNumber}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="newborns">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Newborns</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('newborns', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="newborns" min="0" [(ngModel)]="editing.newborns">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.newborns}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="newGroupName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>New Group</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('newGroupName', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput name="newGroupName" [(ngModel)]="editing.newGroupName">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.newGroupName}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="currentGroupName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Current Group</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('currentGroupName', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput name="currentGroupName" [(ngModel)]="editing.currentGroupName">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.currentGroupName}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="alertType">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert Type</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('alertType', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput name="alertType" [(ngModel)]="editing.alertType">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.alertType}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="cowEntryStatus">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cow Entry Status</th>
-      <td mat-cell *matCellDef="let row">
-        {{row.cowEntryStatus}}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="duration">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('duration', row)">
-          <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="duration" min="0" [(ngModel)]="editing.duration">
-          </ng-container>
-          <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.duration}}
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="originalStartDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Original Start DateTime</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('originalStartDateTime', row)">
+      <ng-container matColumnDef="reportingDateTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reporting Date</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
             <mat-form-field appearance="legacy">
-              <input disabled matInput [matDatepicker]="picker" name="originalStartDateTime" [(ngModel)]="editing.originalStartDateTime">
+              <input disabled matInput [matDatepicker]="picker" name="reportingDateTime" [(ngModel)]="editing.reportingDateTime">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.originalStartDateTime | date}}
+            {{row.reportingDateTime | date}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="endDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>End DateTime</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('endDateTime', row)">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDateTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date Time</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
             <mat-form-field appearance="legacy">
-              <input disabled matInput [matDatepicker]="picker" name="endDateTime" [(ngModel)]="editing.endDateTime">
+              <input disabled matInput [matDatepicker]="picker" name="startDateTime" [(ngModel)]="editing.startDateTime">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.endDateTime | date}}
+            {{row.startDateTime | date}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="heatIndexPeak">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Heat Index Peak</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('heatIndexPeak', row)">
+      <ng-container matColumnDef="cowId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cow Id</th>
+        <td mat-cell *matCellDef="let row">
+          {{row.cowId}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="heatIndexPeak" min="0" [(ngModel)]="editing.heatIndexPeak">
+            <mat-select [(ngModel)]="editing.type" name="type">
+              <mat-option *ngFor="let t of types" [value]="t">{{t}}</mat-option>
+            </mat-select>
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.heatIndexPeak}}
+            {{row.type}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="healthIndex">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Health Index</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('healthIndex', row)">
+      <ng-container matColumnDef="animalId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Animal Id</th>
+        <td mat-cell *matCellDef="let row">
+          {{row.animalId}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="eventId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Id</th>
+        <td mat-cell *matCellDef="let row">
+          {{row.eventId}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lactationNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lactation Number</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <input matInput type="number" name="healthIndex" min="0" [(ngModel)]="editing.healthIndex">
+            <input matInput type="number" name="lactationNumber" min="0" [(ngModel)]="editing.lactationNumber">
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.healthIndex}}
+            {{row.lactationNumber}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('endDate', row)">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="daysInLactation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Days In Lactation</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <mat-form-field appearance="legacy">
-              <input disabled matInput [matDatepicker]="picker" name="endDate" [(ngModel)]="editing.endDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker disabled="false"></mat-datepicker>
-            </mat-form-field>
+            <input matInput type="number" name="daysInLactation" min="0" [(ngModel)]="editing.daysInLactation">
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.endDate | date}}
+            {{row.daysInLactation}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="minValueDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Min Value DateTime</th>
-      <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="hasProperty('minValueDateTime', row)">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ageInDays">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Age In Days</th>
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="editing && editing.eventId === row.eventId">
-            <mat-form-field appearance="legacy">
-              <input disabled matInput [matDatepicker]="picker" name="minValueDateTime" [(ngModel)]="editing.minValueDateTime">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker disabled="false"></mat-datepicker>
-            </mat-form-field>
+            <input matInput type="number" name="ageInDays" min="1" [(ngModel)]="editing.ageInDays">
           </ng-container>
           <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
-            {{row.minValueDateTime | date}}
+            {{row.ageInDays}}
           </ng-container>
-        </ng-container>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!--    CUSTOM END-->
 
-    <ng-container matColumnDef="actions" [stickyEnd]="true">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row" style="display: flex">
-        <button mat-button mat-mini-fab [disabled]="editing && editing.eventId === row.eventId" (click)="edit(row)">
-          <mat-icon>edit</mat-icon>
-        </button>
+      <!--    CUSTOM START-->
+      <ng-container matColumnDef="birthDateCalculated">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth Date Calculated</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('birthDateCalculated', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-slide-toggle name="birthDateCalculated" [(ngModel)]="editing.birthDateCalculated"></mat-slide-toggle>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.birthDateCalculated ? 'Yes' : 'No'}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
 
-        <button mat-button mat-mini-fab [disabled]="!editing || editing.eventId !== row.eventId" (click)="save()">
-          <mat-icon>done</mat-icon>
-        </button>
+      <ng-container matColumnDef="sire">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sire</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('sire', row)">
+            {{row.sire}}
+          </ng-container>
+        </td>
+      </ng-container>
 
-        <button mat-button mat-mini-fab [disabled]="!editing || editing.eventId !== row.eventId" (click)="editing = null">
-          <mat-icon>cancel</mat-icon>
-        </button>
+      <ng-container matColumnDef="breedingNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Breeding Number</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('breedingNumber', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="breedingNumber" min="0" [(ngModel)]="editing.breedingNumber">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.breedingNumber}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
 
-        <button mat-button mat-mini-fab (click)="remove(row.eventId)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="isOutOfBreedingWindow">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Of Breeding Window</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('isOutOfBreedingWindow', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-slide-toggle name="isOutOfBreedingWindow" [(ngModel)]="editing.isOutOfBreedingWindow"></mat-slide-toggle>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.isOutOfBreedingWindow ? 'Yes' : 'No'}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="interval">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Interval</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('interval', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="interval" min="0" [(ngModel)]="editing.interval">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.interval}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="destinationGroupName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Destination Group Name</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('destinationGroupName', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput name="destinationGroupName" [(ngModel)]="editing.destinationGroupName">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.destinationGroupName}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="calvingEase">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Calving Ease</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('calvingEase', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="calvingEase" min="0" [(ngModel)]="editing.calvingEase">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.calvingEase}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="daysInPregnancy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Days In Pregnancy</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('daysInPregnancy', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="daysInPregnancy" min="0" [(ngModel)]="editing.daysInPregnancy">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.daysInPregnancy}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="oldLactationNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Old Lactation Number</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('oldLactationNumber', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="oldLactationNumber" required min="0" [(ngModel)]="editing.oldLactationNumber">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.oldLactationNumber}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="newborns">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Newborns</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('newborns', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="newborns" min="0" [(ngModel)]="editing.newborns">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.newborns}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="newGroupName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>New Group</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('newGroupName', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput name="newGroupName" [(ngModel)]="editing.newGroupName">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.newGroupName}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="currentGroupName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Current Group</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('currentGroupName', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput name="currentGroupName" [(ngModel)]="editing.currentGroupName">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.currentGroupName}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="alertType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert Type</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('alertType', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput name="alertType" [(ngModel)]="editing.alertType">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.alertType}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cowEntryStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cow Entry Status</th>
+        <td mat-cell *matCellDef="let row">
+          {{row.cowEntryStatus}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('duration', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="duration" min="0" [(ngModel)]="editing.duration">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.duration}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="originalStartDateTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Original Start DateTime</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('originalStartDateTime', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-form-field appearance="legacy">
+                <input disabled matInput [matDatepicker]="picker" name="originalStartDateTime" [(ngModel)]="editing.originalStartDateTime">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.originalStartDateTime | date}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="endDateTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>End DateTime</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('endDateTime', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-form-field appearance="legacy">
+                <input disabled matInput [matDatepicker]="picker" name="endDateTime" [(ngModel)]="editing.endDateTime">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.endDateTime | date}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="heatIndexPeak">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Heat Index Peak</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('heatIndexPeak', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="heatIndexPeak" min="0" [(ngModel)]="editing.heatIndexPeak">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.heatIndexPeak}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="healthIndex">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Health Index</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('healthIndex', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <input matInput type="number" name="healthIndex" min="0" [(ngModel)]="editing.healthIndex">
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.healthIndex}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('endDate', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-form-field appearance="legacy">
+                <input disabled matInput [matDatepicker]="picker" name="endDate" [(ngModel)]="editing.endDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.endDate | date}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="minValueDateTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Min Value DateTime</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="hasProperty('minValueDateTime', row)">
+            <ng-container *ngIf="editing && editing.eventId === row.eventId">
+              <mat-form-field appearance="legacy">
+                <input disabled matInput [matDatepicker]="picker" name="minValueDateTime" [(ngModel)]="editing.minValueDateTime">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="!editing || editing.eventId !== row.eventId">
+              {{row.minValueDateTime | date}}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!--    CUSTOM END-->
+
+      <ng-container matColumnDef="actions" [stickyEnd]="true">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row" style="display: flex">
+          <button mat-button mat-mini-fab [disabled]="editing && editing.eventId === row.eventId" (click)="edit(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-button mat-mini-fab [disabled]="f.invalid || !editing || editing.eventId !== row.eventId" (click)="save()">
+            <mat-icon>done</mat-icon>
+          </button>
+
+          <button mat-button mat-mini-fab [disabled]="!editing || editing.eventId !== row.eventId" (click)="editing = null">
+            <mat-icon>cancel</mat-icon>
+          </button>
+
+          <button mat-button mat-mini-fab (click)="remove(row.eventId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </form>
+
 
   <mat-paginator [length]="dataSource?.total"
                  [pageIndex]="0"
@@ -443,3 +451,7 @@
                  [disabled]="true">
   </mat-paginator>
 </div>
+
+<button class="button-add-row" mat-fab color="primary" (click)="addRow()" [disabled]="!!editing || f.invalid">
+  <mat-icon>add</mat-icon>
+</button>

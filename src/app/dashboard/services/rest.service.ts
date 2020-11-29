@@ -29,4 +29,8 @@ export class RestService {
   public saveRow(item: ICowEvent): Observable<null> {
     return this.http.post<null>('/events/', item);
   }
+
+  public createRow(item: ICowEvent): Observable<null> {
+    return this.http.put<null>('/events/', item);
+  }
 }
